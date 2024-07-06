@@ -1,0 +1,22 @@
+
+{
+  "compilerOptions": {
+    "module": "ES2020",
+    "removeComments": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "target": "ES2020",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "incremental": true,
+    "skipLibCheck": true,
+    "noEmit": false,
+    "allowJs": true,
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+  },
+  "include": ["**/*"],
+  "exclude": ["node_modules", "test", "lib", "**/*spec.ts", "./dist"]
+}
