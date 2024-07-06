@@ -1,5 +1,5 @@
 import EventEmitter from "eventemitter3";
-import { Address } from "viem";
+import { Address, toHex } from "viem";
 import { Communicator } from "./communicator/communicator";
 import { supportedMethods } from "./constants/supportedMethod";
 import { MethodCategory, RequestArguments, IProvider } from "./types/provider/provider";
@@ -20,7 +20,7 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
   communicator: Communicator;
   accounts: Address[] = [];
   isAbstractionWallet: boolean = true;
-  chainId: string = "89";
+  chainId: number = 89;
 
   constructor() {
     super();
@@ -32,7 +32,7 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
   }
 
   public async request<T>(args: RequestArguments): Promise<T> {
-    console.log("request", args)
+    console.log("request", toHex(this.chainId))
     const methodCategory = determineMethodCategory(args.method) ?? "fetch";
     return this.handlers[methodCategory](args) as unknown as T;
   }
@@ -52,6 +52,7 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
         const [handshakePopup]: [Communicator, string] = await this.communicator.openPopup("connect");
         const dappInfo = {
           hostname: window.origin,
+          title: document.title,
           icon: `${window.origin}/${getFavicon()}`,
         };
         const payload = {
@@ -83,13 +84,13 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
     state: async (args: RequestArguments) => {
       switch (args.method) {
         case "eth_chainId":
-          return this.chainId;
+          return toHex(this.chainId);
         case "eth_accounts":
           return this.accounts;
         case "eth_coinbase":
           return this.accounts[0];
         case "net_version":
-          return "1";
+          return "0x1";
         default:
           return undefined;
       }
