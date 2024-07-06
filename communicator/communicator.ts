@@ -5,7 +5,6 @@ const POPUP_WIDTH = 420;
 const POPUP_HEIGHT = 540;
 
 export class Communicator {
-  private loaded: boolean = false;
   constructor(private target: Window | null) {}
 
   openPopup(service: string): Promise<[this, string]> {
@@ -30,7 +29,6 @@ export class Communicator {
           event.data.message == "PopupLoaded" &&
           event.data.id === id
         ) {
-          this.loaded = true;
           window.removeEventListener("message", () => {});
           resolve([this, id]);
         }
