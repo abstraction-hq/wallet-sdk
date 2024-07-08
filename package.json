@@ -9,7 +9,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc",
     "dev": "tsc --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"No test specified\""
   },
   "dependencies": {
     "eventemitter3": "^5.0.1",
