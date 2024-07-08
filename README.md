@@ -1,6 +1,6 @@
 # Abstraction Wallet SDK
 
-Abstraction wallet sdk allow developer connect their Dapp to Abstraction Wallet via EIP-6963
+Abstraction wallet SDK allow developers connect their Dapps to Abstraction Wallet via EIP-6963
 
 ## Install Abstraction Wallet SDK
 ```sh
@@ -15,7 +15,7 @@ npm install @abstraction-hq/wallet-sdk
 
 ## Basic Usage
 ### Use with EIP-6963
-1. Init Wallet
+1. Initialize Wallet
 ```typescript
 import { initAbstractionWallet } from "@abstraction-hq/wallet-sdk"
 
