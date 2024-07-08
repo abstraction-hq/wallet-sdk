@@ -1,7 +1,8 @@
+import { IProvider } from "./types/provider/provider";
 import { AbstractionProvider } from "./provider";
 import { EIP6963ProviderInfo } from "./types/provider/eip6963";
 
-const announceProvider: Function = (provider: any) => {
+const announceProvider: Function = (provider: IProvider) => {
   const info: EIP6963ProviderInfo = {
     uuid: Math.random().toString(36).substring(2),
     name: "Abstraction Wallet",
@@ -17,10 +18,18 @@ const announceProvider: Function = (provider: any) => {
 };
 
 const initAbstractionWallet: Function = () => {
-  const provider = new AbstractionProvider()
+  const provider = new AbstractionProvider();
   window.addEventListener("eip6963:requestProvider", () => {
     announceProvider(provider);
   });
 };
 
-export { initAbstractionWallet };
+const createAbstractionProvider: Function = (): IProvider => {
+  const provider = new AbstractionProvider();
+  return provider;
+};
+
+export { initAbstractionWallet, createAbstractionProvider };
+
+export * from "./communicator"
+export * from "./types"
