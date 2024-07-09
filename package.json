@@ -9,10 +9,15 @@
   "scripts": {
     "build": "rm -rf dist && tsc",
     "dev": "tsc --watch",
-    "test": "echo \"No test specified\""
+    "test": "ts-mocha -p ./tsconfig.mocha.json ./tests/*.spec.ts --timeout 60000"
   },
   "dependencies": {
+    "@types/chai": "^4.3.16",
+    "@types/mocha": "^10.0.7",
+    "chai": "^5.1.1",
     "eventemitter3": "^5.0.1",
+    "mocha": "^10.6.0",
+    "ts-mocha": "^10.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3",
     "viem": "^2.17.1"

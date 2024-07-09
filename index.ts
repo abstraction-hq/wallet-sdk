@@ -17,15 +17,15 @@ const announceProvider: Function = (provider: IProvider) => {
   );
 };
 
-const initAbstractionWallet: Function = () => {
-  const provider = new AbstractionProvider();
+const initAbstractionWallet: Function = (keyUrl?: string) => {
+  const provider = new AbstractionProvider(keyUrl);
   window.addEventListener("eip6963:requestProvider", () => {
     announceProvider(provider);
   });
 };
 
-const createAbstractionProvider: Function = (): IProvider => {
-  const provider = new AbstractionProvider();
+const createAbstractionProvider: Function = (keyUrl?: string): IProvider => {
+  const provider = new AbstractionProvider(keyUrl);
   return provider;
 };
 
