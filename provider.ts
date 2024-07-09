@@ -22,9 +22,9 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
   isAbstractionWallet: boolean = true;
   chainId: number = 89;
 
-  constructor() {
+  constructor(keyUrl?: string) {
     super();
-    this.communicator = new Communicator(null);
+    this.communicator = new Communicator(null, keyUrl);
   }
 
   public get connected() {

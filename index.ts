@@ -7,7 +7,7 @@ const announceProvider: Function = (provider: IProvider) => {
     uuid: Math.random().toString(36).substring(2),
     name: "Abstraction Wallet",
     icon: "https://raw.githubusercontent.com/abstraction-hq/abstraction-wallet-extension/main/assets/logo.svg",
-    rdns: "abstraction.world",
+    rdns: "world.abstraction.wallet",
   };
 
   window.dispatchEvent(
@@ -17,15 +17,15 @@ const announceProvider: Function = (provider: IProvider) => {
   );
 };
 
-const initAbstractionWallet: Function = () => {
-  const provider = new AbstractionProvider();
+const initAbstractionWallet: Function = (keyUrl?: string) => {
+  const provider = new AbstractionProvider(keyUrl);
   window.addEventListener("eip6963:requestProvider", () => {
     announceProvider(provider);
   });
 };
 
-const createAbstractionProvider: Function = (): IProvider => {
-  const provider = new AbstractionProvider();
+const createAbstractionProvider: Function = (keyUrl?: string): IProvider => {
+  const provider = new AbstractionProvider(keyUrl);
   return provider;
 };
 
