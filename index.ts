@@ -7,7 +7,7 @@ const announceProvider: Function = (provider: IProvider) => {
     uuid: Math.random().toString(36).substring(2),
     name: "Abstraction Wallet",
     icon: "https://raw.githubusercontent.com/abstraction-hq/abstraction-wallet-extension/main/assets/logo.svg",
-    rdns: "abstraction.world",
+    rdns: "world.abstraction.wallet",
   };
 
   window.dispatchEvent(
