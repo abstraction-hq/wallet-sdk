@@ -2,7 +2,11 @@ import EventEmitter from "eventemitter3";
 import { Address, toHex } from "viem";
 import { Communicator } from "./communicator/communicator";
 import { supportedMethods } from "./constants/supportedMethod";
-import { MethodCategory, RequestArguments, IProvider } from "./types/provider/provider";
+import {
+  MethodCategory,
+  RequestArguments,
+  IProvider,
+} from "./types/provider/provider";
 import { Message } from "./types/communicator/message";
 import { getFavicon } from "./utils/getIcon";
 
@@ -32,7 +36,7 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
   }
 
   public async request<T>(args: RequestArguments): Promise<T> {
-    console.log("request", toHex(this.chainId))
+    console.log("request", toHex(this.chainId));
     const methodCategory = determineMethodCategory(args.method) ?? "fetch";
     return this.handlers[methodCategory](args) as unknown as T;
   }
@@ -49,7 +53,8 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
       }
 
       return new Promise<Address[]>(async (resolve, reject) => {
-        const [handshakePopup]: [Communicator, string] = await this.communicator.openPopup("connect");
+        const [handshakePopup]: [Communicator, string] =
+          await this.communicator.openPopup("connect");
         const dappInfo = {
           hostname: window.origin,
           title: document.title,
@@ -57,9 +62,10 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
         };
         const payload = {
           ...args,
-          dappInfo
+          dappInfo,
         };
-        const handshakeResponse: Message = await handshakePopup.sendRequestMessage(payload);
+        const handshakeResponse: Message =
+          await handshakePopup.sendRequestMessage(payload);
 
         this.accounts = handshakeResponse.payload as Address[];
 
@@ -68,7 +74,6 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
       });
     },
     sign: async (args: RequestArguments) => {
-      console.log(this.accounts);
       if (!this.connected) {
         throw new Error("Not connected");
       }
@@ -76,7 +81,19 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
       return new Promise(async (resolve, reject) => {
         const [signPopup]: [Communicator, string] =
           await this.communicator.openPopup("sign");
-        const signResponse: Message = await signPopup.sendRequestMessage(args);
+        const dappInfo = {
+          hostname: window.origin,
+          title: document.title,
+          icon: `${window.origin}/${getFavicon()}`,
+        };
+        const payload = {
+          ...args,
+          dappInfo,
+        };
+        console.log(payload);
+        const signResponse: Message = await signPopup.sendRequestMessage(
+          payload
+        );
         resolve(signResponse.payload);
       });
     },

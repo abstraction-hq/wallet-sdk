@@ -2,7 +2,7 @@ import { KEY_URL } from "../constants";
 import { Message } from "../types/communicator/message";
 
 const POPUP_WIDTH = 420;
-const POPUP_HEIGHT = 540;
+const POPUP_HEIGHT = 640;
 
 export class Communicator {
   private keyUrl;
@@ -75,6 +75,7 @@ export class Communicator {
     window.addEventListener("message", (event) => {
       if (event.data.type === `request`) {
         callback(event.data);
+        window.removeEventListener("message", () => {});
       }
     });
   }
