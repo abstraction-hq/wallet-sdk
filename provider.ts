@@ -67,6 +67,11 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
         const handshakeResponse: Message =
           await handshakePopup.sendRequestMessage(payload);
 
+        if (handshakeResponse.payload == "rejected") {
+          reject("User rejected the connection");
+          return
+        }
+
         this.accounts = handshakeResponse.payload as Address[];
 
         this.emit("connect", { chainId: "1" });
@@ -90,10 +95,13 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
           ...args,
           dappInfo,
         };
-        console.log(payload);
         const signResponse: Message = await signPopup.sendRequestMessage(
           payload
         );
+        if (signResponse.payload == "rejected") {
+          reject("User rejected the connection");
+          return
+        }
         resolve(signResponse.payload);
       });
     },
