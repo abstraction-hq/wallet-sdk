@@ -15,6 +15,8 @@ const announceProvider: Function = (provider: IProvider) => {
       detail: Object.freeze({ info, provider: provider }),
     })
   );
+
+  window.removeEventListener("eip6963:requestProvider", () => {})
 };
 
 const initAbstractionWallet: Function = (keyUrl?: string) => {
