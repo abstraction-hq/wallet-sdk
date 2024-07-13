@@ -4,9 +4,13 @@
   "main": "dist/index.js",
   "types": "dist/index.d.js",
   "description": "Interact your app with top tier wallet on blockchain.",
-  "repository": "https://github.com/abstraction-hq/wallet-sdk",
   "author": "Abstraction",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abstraction-hq/wallet-sdk"
+  },
+  "homepage": "https://github.com/abstraction-hq/wallet-sdk#readme",
   "keywords": [
     "abstraction",
     "wallet",
