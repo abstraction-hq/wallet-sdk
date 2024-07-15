@@ -1,5 +1,5 @@
 import EventEmitter from "eventemitter3";
-import { supportedMethods } from "constants/supportedMethod";
+import { supportedMethods } from "../../constants/supportedMethod";
 
 export type MethodCategory = keyof typeof supportedMethods;
 export type Method<C extends MethodCategory = MethodCategory> =

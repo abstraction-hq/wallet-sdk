@@ -5,8 +5,8 @@ const POPUP_WIDTH = 420;
 const POPUP_HEIGHT = 640;
 
 export class Communicator {
-  private keyUrl;
-  constructor(private target: Window | null, keyUrl: string | null) {
+  private keyUrl: string;
+  constructor(private target: Window | null, keyUrl?: string) {
     if (keyUrl) {
       this.keyUrl = keyUrl;
     } else {

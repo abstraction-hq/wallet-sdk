@@ -1,4 +1,4 @@
-export const supportedMethods = {
+export const supportedMethods: any = {
   handshake: ['eth_requestAccounts'],
   sign: [
     'eth_ecRecover',

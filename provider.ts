@@ -38,7 +38,7 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
   public async request<T>(args: RequestArguments): Promise<T> {
     console.log("request", toHex(this.chainId));
     const methodCategory = determineMethodCategory(args.method) ?? "fetch";
-    return this.handlers[methodCategory](args) as unknown as T;
+    return (this.handlers as any)[methodCategory](args) as unknown as T;
   }
 
   public async disconnect(): Promise<void> {
