@@ -1,2 +1,2 @@
 export * from "./supportedMethod"
-export const KEY_URL = "http://localhost:3000"
+export const KEY_URL = "https://wallet.abstraction.world"
