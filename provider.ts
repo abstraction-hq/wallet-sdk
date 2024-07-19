@@ -1,5 +1,5 @@
 import EventEmitter from "eventemitter3";
-import { Address, toHex } from "viem";
+import { Address, createPublicClient, PublicClient, toHex } from "viem";
 import { Communicator } from "./communicator/communicator";
 import { supportedMethods } from "./constants/supportedMethod";
 import {
@@ -20,13 +20,24 @@ function determineMethodCategory(method: string): MethodCategory | undefined {
   return undefined;
 }
 
+interface AbstractionProviderInput {
+  bundlerEndpoint?: string;
+  rpcEndpoint?: string;
+  keyUrl?: string;
+}
+
 export class AbstractionProvider extends EventEmitter implements IProvider {
   communicator: Communicator;
   accounts: Address[] = [];
   isAbstractionWallet: boolean = true;
+  ethClient: PublicClient
   chainId: number = 89;
 
-  constructor(keyUrl?: string) {
+  constructor({
+    keyUrl = "https://wallet.abstraction.world",
+    rpcEndpoint = "https://rpc.viction.xyz",
+    bundlerEndpoint = "https://wallet.abstraction.world/bundler",
+  }: AbstractionProviderInput) {
     super();
     this.communicator = new Communicator(null, keyUrl);
   }
@@ -36,7 +47,6 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
   }
 
   public async request<T>(args: RequestArguments): Promise<T> {
-    console.log("request", toHex(this.chainId));
     const methodCategory = determineMethodCategory(args.method) ?? "fetch";
     return (this.handlers as any)[methodCategory](args) as unknown as T;
   }
@@ -48,7 +58,7 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
   protected handlers = {
     handshake: async (args: RequestArguments) => {
       if (this.connected) {
-        this.emit("connect", { chainId: "1" });
+        this.emit("connect", { chainId: this.chainId });
         return this.accounts;
       }
 
