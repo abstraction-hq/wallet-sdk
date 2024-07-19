@@ -1,8 +1,8 @@
 {
   "name": "@abstraction-hq/wallet-sdk",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "dist/index.js",
-  "types": "dist/index.d.js",
+  "types": "dist/index.d.ts",
   "description": "Interact your app with top tier wallet on blockchain.",
   "author": "Abstraction",
   "license": "MIT",
@@ -18,7 +18,7 @@
     "web3"
   ],
   "scripts": {
-    "build": "rm -rf dist && tsc",
+    "build": "rm -rf dist && tsc -p tsconfig.json",
     "dev": "tsc --watch",
     "test": "ts-mocha -p ./tsconfig.mocha.json ./tests/*.spec.ts --timeout 60000",
     "prepare": "npm run build"
