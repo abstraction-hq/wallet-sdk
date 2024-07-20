@@ -18,7 +18,7 @@ describe("Provider", () => {
     const provider: IProvider = createAbstractionProvider();
     console.log(provider.rpcProvider)
     const transaction = await provider.request({
-      method: "eth_getTransactionByHash",
+      method: "eth_getTransactionReceipt",
       params: ["0xc35aef2e2740f084ffe98805c4a16ab7ee762ebd97f832c206def024e1bc9a30"]
     })
 
