@@ -49,7 +49,7 @@ const txHash = await(window as any).abstraction.request({
   params: [
     {
       from: address,
-      to: collection,
+      to: address,
       value: 0,
       data,
     },
@@ -57,34 +57,20 @@ const txHash = await(window as any).abstraction.request({
 });
 ```
 
-3. Send Multiple Transaction
+3. Sending multiple calls
 ```typescript
-const txHash = await(window as any).abstraction.request({
-  method: "eth_sendTransaction",
+const userOpHash = await(window as any).abstraction.request({
+  method: "wallet_getCallsStatus",
   params: [
-    {
-      from: address,
-      to: collection,
-      value: 0,
-      data,
-    },
-    {
-      from: address,
-      to: collection,
-      value: 0,
-      data,
-    },
-    {
-      from: address,
-      to: collection,
-      value: 0,
-      data,
-    },
+    userOpHash
   ],
 });
 ```
 
-4. Create contract
+4. Get call status
+
+
+5. Create contract
 ```typescript
 const txHash = await(window as any).abstraction.request({
   method: "eth_sendTransaction",

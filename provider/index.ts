@@ -113,8 +113,6 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
     },
     state: async (args: RequestArguments) => {
       switch (args.method) {
-        case "eth_chainId":
-          return toHex(this.chainId);
         case "eth_accounts":
           return this.accounts;
         case "eth_coinbase":
