@@ -16,9 +16,7 @@ npm install @abstraction-hq/wallet-sdk
 
 ## Basic Usage
 
-### Use with EIP-6963
-
-1. Initialize Wallet
+### Init provider with EIP-6963
 
 ```typescript
 import { initAbstractionWallet } from "@abstraction-hq/wallet-sdk";
@@ -26,9 +24,7 @@ import { initAbstractionWallet } from "@abstraction-hq/wallet-sdk";
 initAbstractionWallet();
 ```
 
-### Use with Provider
-
-1. Create provider
+### Create provider
 
 ```typescript
 import { createAbstractionProvider } from "@abstraction-hq/wallet-sdk";
@@ -36,8 +32,8 @@ import { createAbstractionProvider } from "@abstraction-hq/wallet-sdk";
 const provider = createAbstractionProvider();
 ```
 
-2 Use provider
-2.1 Connect Wallet
+### Use provider
+1. Connect Wallet
 
 ```typescript
 const addresses = provider.request({
@@ -45,7 +41,7 @@ const addresses = provider.request({
 });
 ```
 
-2.2 Send Transaction
+2. Send Transaction
 
 ```typescript
 const txHash = await(window as any).abstraction.request({
@@ -61,7 +57,7 @@ const txHash = await(window as any).abstraction.request({
 });
 ```
 
-2.3 Send Multiple Transaction
+3. Send Multiple Transaction
 ```typescript
 const txHash = await(window as any).abstraction.request({
   method: "eth_sendTransaction",
@@ -85,5 +81,20 @@ const txHash = await(window as any).abstraction.request({
       data,
     },
   ],
+});
+```
+
+4. Create contract
+```typescript
+const txHash = await(window as any).abstraction.request({
+  method: "eth_sendTransaction",
+  params: [
+    {
+      from: address,
+      value: 0,
+      data: CONTRACT_BYTECODE,
+    },
+  ],
+  salt: // Salt to create contract with create2 - account.nonce() if not provide
 });
 ```
