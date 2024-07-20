@@ -1,14 +1,16 @@
 import EventEmitter from "eventemitter3";
 import { Address, toHex } from "viem";
-import { Communicator } from "./communicator/communicator";
-import { supportedMethods } from "./constants/supportedMethod";
+import { Communicator } from "../communicator/communicator";
+import { supportedMethods } from "../constants/supportedMethod";
 import {
   MethodCategory,
   RequestArguments,
   IProvider,
-} from "./types/provider/provider";
-import { Message } from "./types/communicator/message";
-import { getFavicon } from "./utils/getIcon";
+  ProviderInput,
+} from "../types";
+import { Message } from "../types";
+import { getFavicon } from "../utils/getIcon";
+import RPCProvider from "./rpcProvider";
 
 function determineMethodCategory(method: string): MethodCategory | undefined {
   for (const c in supportedMethods) {
@@ -21,14 +23,16 @@ function determineMethodCategory(method: string): MethodCategory | undefined {
 }
 
 export class AbstractionProvider extends EventEmitter implements IProvider {
+  public rpcProvider: RPCProvider;
   communicator: Communicator;
   accounts: Address[] = [];
   isAbstractionWallet: boolean = true;
   chainId: number = 89;
 
-  constructor(keyUrl?: string) {
+  constructor(providerInput?: ProviderInput) {
     super();
-    this.communicator = new Communicator(null, keyUrl);
+    this.communicator = new Communicator(null, providerInput?.keyUrl);
+    this.rpcProvider = new RPCProvider(providerInput?.rpcInput)
   }
 
   public get connected() {
@@ -36,7 +40,6 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
   }
 
   public async request<T>(args: RequestArguments): Promise<T> {
-    console.log("request", toHex(this.chainId));
     const methodCategory = determineMethodCategory(args.method) ?? "fetch";
     return (this.handlers as any)[methodCategory](args) as unknown as T;
   }
@@ -105,7 +108,9 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
         resolve(signResponse.payload);
       });
     },
-    fetch: async (args: RequestArguments) => {},
+    fetch: async (args: RequestArguments) => {
+      return this.rpcProvider.requestRPC(args);
+    },
     state: async (args: RequestArguments) => {
       switch (args.method) {
         case "eth_chainId":

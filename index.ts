@@ -1,6 +1,5 @@
-import { IProvider } from "./types/provider/provider";
+import { IProvider, ProviderInput, EIP6963ProviderInfo } from "./types";
 import { AbstractionProvider } from "./provider";
-import { EIP6963ProviderInfo } from "./types/provider/eip6963";
 
 const announceProvider: Function = (provider: IProvider) => {
   const info: EIP6963ProviderInfo = {
@@ -19,15 +18,15 @@ const announceProvider: Function = (provider: IProvider) => {
   window.removeEventListener("eip6963:requestProvider", () => {})
 };
 
-const initAbstractionWallet: Function = (keyUrl?: string) => {
-  const provider = new AbstractionProvider(keyUrl);
+const initAbstractionWallet: Function = (providerInput?: ProviderInput) => {
+  const provider = new AbstractionProvider(providerInput);
   window.addEventListener("eip6963:requestProvider", () => {
     announceProvider(provider);
   });
 };
 
-const createAbstractionProvider: Function = (keyUrl?: string): IProvider => {
-  const provider = new AbstractionProvider(keyUrl);
+const createAbstractionProvider: Function = (providerInput?: ProviderInput): IProvider => {
+  const provider = new AbstractionProvider(providerInput);
   return provider;
 };
 
@@ -35,3 +34,6 @@ export { initAbstractionWallet, createAbstractionProvider };
 
 export * from "./communicator"
 export * from "./types"
+export * from "./constants"
+export * from "./provider"
+export * from "./utils"
