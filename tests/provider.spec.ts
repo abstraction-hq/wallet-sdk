@@ -24,14 +24,4 @@ describe("Provider", () => {
 
     console.log(transaction)
   })
-
-  it("Get call status", async () => {
-    const provider: IProvider = createAbstractionProvider();
-    const callStatus = await provider.request({
-      method: "wallet_getCallsStatus",
-      params: ["0x6b4f1165bfee4d6164ab44f52bd9e5bfa40da28491a33960ad9952aa3f202799"]
-    })
-
-    console.log(callStatus)
-  })
 })
