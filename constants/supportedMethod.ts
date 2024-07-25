@@ -19,7 +19,8 @@ export const supportedMethods: any = {
   ],
   state: [
     // internal state
-    'eth_chainId',
+    // 'eth_chainId',
+    'wallet_getCallsStatus',
     'eth_accounts',
     'eth_coinbase',
     'net_version',
