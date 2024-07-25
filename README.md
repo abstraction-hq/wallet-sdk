@@ -60,14 +60,38 @@ const txHash = await(window as any).abstraction.request({
 3. Sending multiple calls
 ```typescript
 const userOpHash = await(window as any).abstraction.request({
+  method: "wallet_sendCalls",
+  params: [
+    {
+      version: "1.0",
+      chainId: "0x58",
+      from: "0xd46e8dd67c5d32be8058bb8eb970870f07244567",
+      calls: [
+        {
+          to: "0xd46e8dd67c5d32be8058bb8eb970870f07244567",
+          value: "0x9184e72a",
+          data: "0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675"
+        },
+        {
+          to: "0xd46e8dd67c5d32be8058bb8eb970870f07244567",
+          value: "0x9184e72a",
+          data: "0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675"
+        },
+      ]
+    }
+  ],
+});
+```
+
+4. Get call status
+```typescript
+const callStatus = await(window as any).abstraction.request({
   method: "wallet_getCallsStatus",
   params: [
     userOpHash
   ],
 });
 ```
-
-4. Get call status
 
 
 5. Create contract

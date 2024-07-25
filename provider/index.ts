@@ -11,6 +11,8 @@ import {
 import { Message } from "../types";
 import { getFavicon } from "../utils/getIcon";
 import RPCProvider from "./rpcProvider";
+import { BUNDLER_URL } from "../constants";
+import axios from "axios";
 
 function determineMethodCategory(method: string): MethodCategory | undefined {
   for (const c in supportedMethods) {
@@ -32,7 +34,7 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
   constructor(providerInput?: ProviderInput) {
     super();
     this.communicator = new Communicator(null, providerInput?.keyUrl);
-    this.rpcProvider = new RPCProvider(providerInput?.rpcInput)
+    this.rpcProvider = new RPCProvider(providerInput?.rpcInput);
   }
 
   public get connected() {
@@ -72,7 +74,7 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
 
         if (handshakeResponse.payload == "rejected") {
           reject("User rejected the connection");
-          return
+          return;
         }
 
         this.accounts = handshakeResponse.payload as Address[];
@@ -103,7 +105,7 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
         );
         if (signResponse.payload == "rejected") {
           reject("User rejected the connection");
-          return
+          return;
         }
         resolve(signResponse.payload);
       });
@@ -119,6 +121,15 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
           return this.accounts[0];
         case "net_version":
           return "0x1";
+        case "wallet_getCallsStatus":
+          const data = {
+            jsonrpc: "2.0",
+            id: 1,
+            method: "eth_getUserOperationReceipt",
+            params: args.params,
+          };
+          const response = await axios.post(BUNDLER_URL, data);
+          return response.data
         default:
           return undefined;
       }
