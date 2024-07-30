@@ -1,5 +1,5 @@
 import EventEmitter from "eventemitter3";
-import { Address, toHex } from "viem";
+import { Address } from "viem";
 import { Communicator } from "../communicator/communicator";
 import { supportedMethods } from "../constants/supportedMethod";
 import {
@@ -12,7 +12,6 @@ import { Message } from "../types";
 import { getFavicon } from "../utils/getIcon";
 import RPCProvider from "./rpcProvider";
 import { BUNDLER_URL } from "../constants";
-import axios from "axios";
 
 function determineMethodCategory(method: string): MethodCategory | undefined {
   for (const c in supportedMethods) {
@@ -122,21 +121,32 @@ export class AbstractionProvider extends EventEmitter implements IProvider {
         case "net_version":
           return "0x1";
         case "wallet_getCallsStatus":
-          const data = {
-            jsonrpc: "2.0",
-            id: 1,
-            method: "eth_getUserOperationReceipt",
-            params: args.params,
-          };
-          const response = await axios.post(BUNDLER_URL, data);
-          return response.data
+          try {
+            const data = {
+              jsonrpc: "2.0",
+              id: 1,
+              method: "eth_getUserOperationReceipt",
+              params: args.params,
+            };
+            const response = await fetch(BUNDLER_URL, {
+              body: JSON.stringify(data),
+              headers: {
+                "Content-Type": "application/json",
+              },
+              method: "POST",
+            });
+            return response.json();
+          } catch (err) {
+            console.log(err)
+            throw new Error(err);
+          }
         default:
-          return undefined;
+          throw new Error(`Method ${args.method} is not supported.`);
       }
     },
     deprecated: async (args: RequestArguments) => {},
     unsupported: ({ method }: RequestArguments) => {
-      // throw standardErrors.rpc.methodNotSupported(`Method ${method} is not supported.`);
+      // throw new Error(`Method ${method} is not supported.`);
     },
   };
 }
